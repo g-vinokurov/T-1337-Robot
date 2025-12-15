@@ -14,6 +14,11 @@ import Gui.Themes as Themes
 from Log import log
 from App import app
 
+import requests
+
+HOST = '192.168.4.1'
+PORT = 80
+
 
 class DashboardScreen(Screen):
     def __init__(self, parent, *args, **kwargs):
@@ -22,6 +27,7 @@ class DashboardScreen(Screen):
 
     def initUI(self):
         self.setObjectName('dashboard-screen')
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
@@ -44,18 +50,6 @@ class DashboardScreen(Screen):
         app.gui.setWindowTitle('T-1337 Control')
         self.restyleUI()
     
-    @property
-    def header(self):
-        return self._header
-    
-    @property
-    def body(self):
-        return self._body
-    
-    @property
-    def footer(self):
-        return self._footer
-    
     def restyleUI(self, recursive: bool = False):
         self.setStyleSheet(f'''
             QWidget#dashboard-screen {{
@@ -70,3 +64,58 @@ class DashboardScreen(Screen):
         self._header.restyleUI(recursive)
         self._body.restyleUI(recursive)
         self._footer.restyleUI(recursive)
+        self.setFocus()
+    
+    def keyPressEvent(self, event):
+        if event.isAutoRepeat():
+            return  # Игнорируем автоповтор
+    
+        key = event.key()
+        
+        match key:
+            case Qt.Key.Key_W.value:
+                self.send_cmd('0')  # Left Forward
+            case Qt.Key.Key_S.value:
+                self.send_cmd('2')  # Left Backward
+            case Qt.Key.Key_Up.value:
+                self.send_cmd('1')  # Right Forward
+            case Qt.Key.Key_Down.value:
+                self.send_cmd('3')  # Right Backward
+            case Qt.Key.Key_Left.value:
+                self.send_cmd('6')  # Tower Left
+            case Qt.Key.Key_Right.value:
+                self.send_cmd('7')  # Tower Right
+            case _:
+                print('Unsupported key')
+        super().keyPressEvent(event)
+    
+    def keyReleaseEvent(self, event):
+        if event.isAutoRepeat():
+            return  # Игнорируем автоповтор
+
+        key = event.key()
+        
+        match key:
+            case Qt.Key.Key_W.value:
+                self.send_cmd('4')  # Left Stop
+            case Qt.Key.Key_S.value:
+                self.send_cmd('4')  # Left Stop
+            case Qt.Key.Key_Up.value:
+                self.send_cmd('5')  # Right Stop
+            case Qt.Key.Key_Down.value:
+                self.send_cmd('5')  # Right Stop
+            case Qt.Key.Key_Left.value:
+                self.send_cmd('8')  # Tower Stop
+            case Qt.Key.Key_Right.value:
+                self.send_cmd('8')  # Tower Stop
+            case _:
+                print('Unsupported key')
+        super().keyReleaseEvent(event)
+    
+    def send_cmd(self, cmd: str):
+        url = f'http://{HOST}:{PORT}/api/cmd'
+        try:
+            r = requests.post(url, data=cmd)
+        except Exception as err:
+            log.error(err)
+        log.info(f'CMD: {cmd}')
