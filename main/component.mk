@@ -1,0 +1,4 @@
+COMPONENT_SRCDIRS := .
+COMPONENT_ADD_INCLUDEDIRS := .
+COMPONENT_PRIV_REQUIRES := driver nvs_flash esp_http_server
+
