@@ -9,15 +9,15 @@ AF_DCMotor motorR2(4);  // Create motor on M4
 
 Servo tower; // Create tower
 
-int speed_l = 180; // Левый борт
-int speed_r = 180; // Правый борт
+int speed_l = 225; // Левый борт
+int speed_r = 225; // Правый борт
 int tower_right = 100; // Right speed (90 + 10)
 int tower_left = 80; // Left speed (90 - 10)
 int tower_stop = 90;
 
 void setup() {
-  Serial.begin(300); // Для отладки
-  Serial1.begin(300); // Связь с ESP8266 (пины 18/RX1, 19/TX1)
+  Serial.begin(115200); // Для отладки
+  Serial1.begin(115200); // Связь с ESP8266 (пины 18/RX1, 19/TX1)
 
   motorR1.setSpeed(speed_r);  // Set speed (0-255)
   motorR2.setSpeed(speed_r);  // Set speed (0-255)
