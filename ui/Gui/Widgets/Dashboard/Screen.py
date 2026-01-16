@@ -1,4 +1,3 @@
-
 from PySide6.QtWidgets import QVBoxLayout
 
 from PySide6.QtCore import Qt
@@ -74,13 +73,13 @@ class DashboardScreen(Screen):
         
         match key:
             case Qt.Key.Key_W.value:
-                self.send_cmd('0')  # Left Forward
+                self.send_cmd('1')  # Left Forward
             case Qt.Key.Key_S.value:
-                self.send_cmd('2')  # Left Backward
+                self.send_cmd('3')  # Left Backward
             case Qt.Key.Key_Up.value:
-                self.send_cmd('1')  # Right Forward
+                self.send_cmd('0')  # Right Forward
             case Qt.Key.Key_Down.value:
-                self.send_cmd('3')  # Right Backward
+                self.send_cmd('2')  # Right Backward
             case Qt.Key.Key_Left.value:
                 self.send_cmd('6')  # Tower Left
             case Qt.Key.Key_Right.value:
@@ -97,13 +96,13 @@ class DashboardScreen(Screen):
         
         match key:
             case Qt.Key.Key_W.value:
-                self.send_cmd('4')  # Left Stop
+                self.send_cmd('5')  # Left Stop
             case Qt.Key.Key_S.value:
-                self.send_cmd('4')  # Left Stop
+                self.send_cmd('5')  # Left Stop
             case Qt.Key.Key_Up.value:
-                self.send_cmd('5')  # Right Stop
+                self.send_cmd('4')  # Right Stop
             case Qt.Key.Key_Down.value:
-                self.send_cmd('5')  # Right Stop
+                self.send_cmd('4')  # Right Stop
             case Qt.Key.Key_Left.value:
                 self.send_cmd('8')  # Tower Stop
             case Qt.Key.Key_Right.value:
