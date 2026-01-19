@@ -15,8 +15,8 @@ lego_support_inner_diameter = 4.8
 lego_plate_height       = 3.2
 lego_plate_inner_height = lego_plate_height - lego_wall_thickness
 
-wall_thickness     = 1.8
-wall_height = 16
+wall_thickness = 1.8
+wall_height    = 16
 
 lego_part_length = lego_unit_size * lego_pip_count_x
 lego_part_width  = lego_unit_size * lego_pip_count_y
@@ -26,7 +26,7 @@ with BuildPart() as lego:
     # Создаем основную форму
     length = lego_part_length
     width  = lego_part_width
-    height = wall_thickness
+    height = lego_plate_inner_height
     Box(length, width, height)
     
     # Вырезаем внутреннюю часть
@@ -68,10 +68,10 @@ with BuildPart() as lego:
         Box(length, width, height)
 
     # Делаем стенку на крышке
-    # Толщина 1.6 мм
+    # Толщина 1.8 мм
     x_pos = -lego_part_length / 2 + wall_thickness / 2
     y_pos = 0
-    z_pos = z_pos + wall_height / 2
+    z_pos = z_pos + lego_wall_thickness / 2 + wall_height / 2
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = wall_thickness
         width  = lego_part_width
