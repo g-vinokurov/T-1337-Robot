@@ -21,6 +21,8 @@ wall_height      = 22.4
 vent_hole_height = 16
 vent_hole_width  = 4
 
+slot_height = 1.8
+
 lego_part_length = lego_unit_size * lego_pip_count_x
 lego_part_width  = lego_unit_size * lego_pip_count_y
 
@@ -235,9 +237,43 @@ with BuildPart() as lego:
     z_pos = z_pos
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         radius = 0.9
-        height = 8
+        height = 6
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Cylinder(radius, height, align=align)
+    
+    # Прорези для крепежа верхних элементов
+    z_pos = z_pos - 3 + wall_height - slot_height / 2
+    for i in range(9):
+        x_pos = -lego_part_length / 2 + (5.5 + 2.5) + i * 10
+        y_pos = lego_part_width / 2 - x_wall_thickness / 2
+        with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+            length = 5
+            width  = x_wall_thickness
+            height = slot_height
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Box(length, width, height)
+    
+    z_pos = z_pos
+    for i in range(9):
+        x_pos = -lego_part_length / 2 + (5.5 + 2.5) + i * 10
+        y_pos = -lego_part_width / 2 + x_wall_thickness / 2
+        with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+            length = 5
+            width  = x_wall_thickness
+            height = slot_height
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Box(length, width, height)
+    
+    z_pos = z_pos
+    for i in range(6):
+        x_pos = -lego_part_length / 2 + y_wall_thickness / 2
+        y_pos = -lego_part_width / 2 + (4.5 + 2.5) + i * 10
+        with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+            length = y_wall_thickness
+            width  = 5
+            height = slot_height
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Box(length, width, height)
 
 
 show(lego.part, names=["Lego Raspberry Pi 4 Box"])
