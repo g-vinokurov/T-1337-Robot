@@ -16,7 +16,7 @@ lego_plate_height       = 3.2
 lego_plate_inner_height = lego_plate_height - lego_wall_thickness
 
 wall_thickness     = 1.8
-wall_height = 18
+wall_height = 16
 
 lego_part_length = lego_unit_size * lego_pip_count_x
 lego_part_width  = lego_unit_size * lego_pip_count_y
@@ -26,7 +26,7 @@ with BuildPart() as lego:
     # Создаем основную форму
     length = lego_part_length
     width  = lego_part_width
-    height = lego_plate_inner_height
+    height = wall_thickness
     Box(length, width, height)
     
     # Вырезаем внутреннюю часть
@@ -152,17 +152,17 @@ with BuildPart() as lego:
     
     x_pos = x_pos
     y_pos = 0
-    z_pos = z_pos + wall_height / 2 - 2.5
+    z_pos = z_pos + wall_height / 2 - 1.5
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = wall_thickness
         width  = lego_part_width
-        height = 5
+        height = 3
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = x_pos
     y_pos = 0
-    z_pos = z_pos + 2.5 - wall_height + 1
+    z_pos = z_pos + 1.5 - wall_height + 1
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = wall_thickness
         width  = lego_part_width
@@ -173,7 +173,7 @@ with BuildPart() as lego:
     # Прорези для крепежа верхних элементов
     z_pos = z_pos - 1 + wall_height - wall_thickness / 2
     for i in range(14):
-        x_pos = -lego_part_length / 2 + wall_thickness + 5 + i * 10
+        x_pos = -lego_part_length / 2 + (2 + 5) + i * 10
         y_pos = -lego_part_width / 2 + wall_thickness / 2
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
             length = 5
@@ -183,7 +183,7 @@ with BuildPart() as lego:
             Box(length, width, height)
     
     for i in range(14):
-        x_pos = -lego_part_length / 2 + wall_thickness + 5 + i * 10
+        x_pos = -lego_part_length / 2 + (2 + 5) + i * 10
         y_pos = lego_part_width / 2 - wall_thickness / 2
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
             length = 5
