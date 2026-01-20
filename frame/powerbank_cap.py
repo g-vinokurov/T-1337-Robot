@@ -15,8 +15,8 @@ lego_support_inner_diameter = 4.8
 lego_plate_height       = 3.2
 lego_plate_inner_height = lego_plate_height - lego_wall_thickness
 
-wall_thickness = 1.8
-wall_height    = 16
+wall_thickness = 1.2
+wall_height    = 22.4
 
 lego_part_length = lego_unit_size * lego_pip_count_x
 lego_part_width  = lego_unit_size * lego_pip_count_y

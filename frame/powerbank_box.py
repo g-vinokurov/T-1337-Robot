@@ -15,8 +15,8 @@ lego_support_inner_diameter = 4.8
 lego_plate_height       = 3.2
 lego_plate_inner_height = lego_plate_height - lego_wall_thickness
 
-wall_thickness = 1.8
-wall_height    = 16
+wall_thickness = 1.2
+wall_height    = 22.4
 
 lego_part_length = lego_unit_size * lego_pip_count_x
 lego_part_width  = lego_unit_size * lego_pip_count_y
@@ -68,7 +68,7 @@ with BuildPart() as lego:
         Box(length, width, height)
 
     # Делаем стенку на крышке
-    # Толщина 1.8 мм
+    # Толщина 1.2 мм
     x_pos = -lego_part_length / 2 + wall_thickness / 2
     y_pos = 0
     z_pos = z_pos + lego_wall_thickness / 2 + wall_height / 2
@@ -152,17 +152,17 @@ with BuildPart() as lego:
     
     x_pos = x_pos
     y_pos = 0
-    z_pos = z_pos + wall_height / 2 - 1.5
+    z_pos = z_pos + wall_height / 2 - 4.8
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = wall_thickness
         width  = lego_part_width
-        height = 3
+        height = 9.6
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = x_pos
     y_pos = 0
-    z_pos = z_pos + 1.5 - wall_height + 1
+    z_pos = z_pos + 4.8 - wall_height + 1
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = wall_thickness
         width  = lego_part_width
@@ -209,6 +209,37 @@ with BuildPart() as lego:
             length = wall_thickness
             width  = 5
             height = wall_thickness
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Box(length, width, height)
+    
+    z_pos = z_pos + wall_thickness / 2 - wall_height / 2
+    for i in range(14):
+        x_pos = -lego_part_length / 2 + 2 + 5 + i * 10
+        y_pos = -lego_part_width / 2 + wall_thickness / 2
+        with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+            length = 5
+            width  = wall_thickness
+            height = 12
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Box(length, width, height)
+    
+    for i in range(14):
+        x_pos = -lego_part_length / 2 + 2 + 5 + i * 10
+        y_pos = lego_part_width / 2 - wall_thickness / 2
+        with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+            length = 5
+            width  = wall_thickness
+            height = 12
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Box(length, width, height)
+    
+    for i in range(14):
+        x_pos = -lego_part_length / 2 + wall_thickness / 2
+        y_pos = -lego_part_width / 2 + 1 + 5 + i * 10
+        with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+            length = wall_thickness
+            width  = 5
+            height = 12
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Box(length, width, height)
 
