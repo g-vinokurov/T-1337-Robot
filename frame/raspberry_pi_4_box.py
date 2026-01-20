@@ -274,9 +274,9 @@ with BuildPart() as lego:
             Box(length, width, height)
     
     z_pos = z_pos
-    for i in range(6):
+    for i in range(5):
         x_pos = -lego_part_length / 2 + y_wall_thickness / 2
-        y_pos = -lego_part_width / 2 + (4.5 + 2.5) + i * 10
+        y_pos = -lego_part_width / 2 + (9.5 + 2.5) + i * 10
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
             length = y_wall_thickness
             width  = 5
