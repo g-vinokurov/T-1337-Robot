@@ -13,7 +13,7 @@ class VideoClient(QWidget):
         self.setGeometry(100, 100, 800, 600)
         
         # Элементы интерфейса
-        self.url_input = QLineEdit("http://192.168.137.144:8000/stream.mjpg")
+        self.url_input = QLineEdit("http://192.168.137.136:8000/stream.mjpg")
         self.connect_btn = QPushButton("Подключиться")
         self.connect_btn.clicked.connect(self.start_stream)
         

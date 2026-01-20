@@ -5,6 +5,12 @@ import requests
 import threading
 from collections import deque
 
+CTRL_HOST = '192.168.4.1'
+CTRL_PORT = 80
+
+VIDEO_HOST = '192.168.4.100'
+VIDEO_PORT = 8000
+
 class FastPygameClient:
     def __init__(self):
         pygame.init()
@@ -13,7 +19,7 @@ class FastPygameClient:
         pygame.display.set_caption("Fast Video Stream")
         
         # Оптимизации Pygame
-        pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.MOUSEBUTTONDOWN])
+        pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN, pygame.KEYUP, pygame.MOUSEBUTTONDOWN])
         
         # Двойная буферизация
         self.buffer = pygame.Surface((self.width, self.height))
@@ -33,14 +39,14 @@ class FastPygameClient:
         self.fps = 0
         self.frame_count = 0
         self.last_time = pygame.time.get_ticks()
+        self.ctrl_session = requests.Session()
         
     def video_worker(self):
         """Рабочий поток для получения видео"""
         session = requests.Session()
         
         try:
-            response = session.get("http://192.168.137.144:8000/stream.mjpg", 
-                                  stream=True, timeout=5)
+            response = session.get(f"http://{VIDEO_HOST}:{VIDEO_PORT}/stream.mjpg", stream=True, timeout=5)
             
             jpeg_buffer = bytearray()
             
@@ -102,11 +108,65 @@ class FastPygameClient:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                elif event.type == pygame.KEYDOWN:
+                    continue
+
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
-                    elif event.key == pygame.K_SPACE:
+                        continue
+
+                    if event.key == pygame.K_SPACE:
                         self.streaming = not self.streaming
+                        continue
+
+                    if event.key == pygame.K_w:
+                        self.send_cmd('1')  # Left Forward
+                        continue
+
+                    if event.key == pygame.K_s:
+                        self.send_cmd('3')  # Left Backward
+                        continue
+
+                    if event.key == pygame.K_UP:
+                        self.send_cmd('0')  # Right Forward
+                        continue
+
+                    if event.key == pygame.K_DOWN:
+                        self.send_cmd('2')  # Right Backward
+                        continue
+
+                    if event.key == pygame.K_LEFT:
+                        self.send_cmd('6')  # Tower Left
+                        continue
+
+                    if event.key == pygame.K_RIGHT:
+                        self.send_cmd('7')  # Tower Right
+                        continue
+                
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_w:
+                        self.send_cmd('5')  # Left Forward
+                        continue
+
+                    if event.key == pygame.K_s:
+                        self.send_cmd('5')  # Left Backward
+                        continue
+
+                    if event.key == pygame.K_UP:
+                        self.send_cmd('4')  # Right Forward
+                        continue
+
+                    if event.key == pygame.K_DOWN:
+                        self.send_cmd('4')  # Right Backward
+                        continue
+
+                    if event.key == pygame.K_LEFT:
+                        self.send_cmd('8')  # Tower Left
+                        continue
+
+                    if event.key == pygame.K_RIGHT:
+                        self.send_cmd('8')  # Tower Right
+                        continue
             
             # Получаем последний кадр
             current_frame = None
@@ -141,6 +201,28 @@ class FastPygameClient:
             clock.tick(60)
         
         pygame.quit()
+        self.ctrl_session.close()
+    
+    def send_cmd(self, cmd: str):
+        url = f'http://{CTRL_HOST}:{CTRL_PORT}/api/cmd'
+        try:
+            self.send_async(url, data=cmd)
+        except Exception as err:
+            # print(err)
+            pass
+        print(f'CMD: {cmd}')
+    
+    def send_async(self, url, data):
+        """Отправка счета в отдельном потоке без ожидания ответа"""
+        def send():
+            try:
+                self.ctrl_session.post(url, data=data, timeout=1)
+            except:
+                pass
+        
+        thread = threading.Thread(target=send)
+        thread.daemon = True
+        thread.start()
 
 if __name__ == "__main__":
     app = FastPygameClient()

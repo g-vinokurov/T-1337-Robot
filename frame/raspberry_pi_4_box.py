@@ -110,17 +110,17 @@ with BuildPart() as lego:
     # Стенка возле HDMI разьёмов
     x_pos = 0
     y_pos = -lego_part_width / 2 + x_wall_thickness / 2
-    z_pos = z_pos - 0.5
+    z_pos = z_pos - 1.5 + 0.6
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = lego_part_length
         width  = x_wall_thickness
-        height = 2
+        height = 1.2
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = -lego_part_length / 2 + y_wall_thickness + 4
     y_pos = -lego_part_width / 2 + x_wall_thickness / 2
-    z_pos = z_pos - 1 + wall_height / 2
+    z_pos = z_pos - 0.6 + wall_height / 2
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = 8
         width  = x_wall_thickness
@@ -190,6 +190,15 @@ with BuildPart() as lego:
             height = vent_hole_height
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Box(length, width, height)
+    
+    x_pos = -lego_part_length / 2 + y_wall_thickness / 2
+    y_pos = 0
+    with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
+        length = y_wall_thickness
+        width  = 14
+        height = vent_hole_height
+        align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+        Box(length, width, height)
     
     for i in range(13):
         x_pos = -lego_part_length / 2 + y_wall_thickness + 2 + i * 7
