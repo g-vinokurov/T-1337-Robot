@@ -18,9 +18,9 @@ part_height = t1337_brick_height
 
 with BuildPart() as t1337:
     # Base part
-    length = part_length
-    width  = part_width
-    height = part_height
+    length = part_length - 0.2
+    width  = part_width  - 0.2
+    height = part_height - 0.2
     Box(length, width, height)
     
     # Holes
@@ -28,14 +28,14 @@ with BuildPart() as t1337:
     for i in range(1, x_units):
         x_pos = -part_length / 2 + t1337_unit_size * i
 
-        y_pos = t1337_unit_size / 2 - 0.4
+        y_pos = (part_width - 0.2) / 2 - 0.4
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
             radius = t1337_hole_outer_diameter / 2
             height = 0.8
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align, rotation=(90, 0, 0))
         
-        y_pos = -t1337_unit_size / 2 + 0.4
+        y_pos = -(part_width - 0.2) / 2 + 0.4
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
             radius = t1337_hole_outer_diameter / 2
             height = 0.8
@@ -44,35 +44,37 @@ with BuildPart() as t1337:
         
         y_pos = 0
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
-            radius = t1337_hole_inner_diameter / 2
+            radius = t1337_hole_inner_diameter / 2 + 0.2
             height = t1337_unit_size
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align, rotation=(90, 0, 0))
     
     # Bottom
-    z_pos = -part_height / 2 + t1337_pip_height / 2
+    z_pos = -(part_height - 0.2) / 2 + t1337_pip_height / 2
     y_pos = 0
     for i in range(x_units):
         x_pos = -part_length / 2 + t1337_unit_size / 2 + i * t1337_unit_size
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
-            length = t1337_pip_size
-            width  = t1337_pip_size
-            height = t1337_pip_height
+            length = t1337_pip_size   + 0.15
+            width  = t1337_pip_size   + 0.15
+            height = t1337_pip_height + 0.15
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Box(length, width, height)
     
     # Top
-    z_pos = part_height / 2 + t1337_pip_height / 2
+    z_pos = (part_height - 0.2) / 2 + (t1337_pip_height - 0.2) / 2
     y_pos = 0
     for i in range(x_units):
         x_pos = -part_length / 2 + t1337_unit_size / 2 + i * t1337_unit_size
         with BuildPart(Location((x_pos, y_pos, z_pos))):
-            length = t1337_pip_size
-            width  = t1337_pip_size
-            height = t1337_pip_height
+            length = t1337_pip_size   - 0.2
+            width  = t1337_pip_size   - 0.2
+            height = t1337_pip_height - 0.2
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Box(length, width, height)
 
 
-show(t1337.part, names=[__file__.rstrip('.py')])
-export_stl(t1337.part, f"{__file__.rstrip('.py')}.stl")
+filename = f'{__file__.rstrip('.py')}_{x_units}x{y_units}'
+
+show(t1337.part, names=[filename])
+export_stl(t1337.part, f'{filename}.stl')
