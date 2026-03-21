@@ -55,9 +55,9 @@ with BuildPart() as t1337:
     for i in range(x_units):
         x_pos = -part_length / 2 + t1337_unit_size / 2 + i * t1337_unit_size
         with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
-            length = t1337_pip_size   + 0.15
-            width  = t1337_pip_size   + 0.15
-            height = t1337_pip_height + 0.15
+            length = t1337_pip_size   + 0.18
+            width  = t1337_pip_size   + 0.18
+            height = t1337_pip_height + 0.18
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Box(length, width, height)
     
