@@ -10,7 +10,7 @@ hole_outer_diameter = 6.2 # lego hole outer diameter
 with BuildPart() as part:
     length = unit_size * 20
     width  = unit_size * 8
-    height = 2.0
+    height = 3.2
     Box(length, width, height)
 
     x_pos = unit_size * -2.5
@@ -67,7 +67,7 @@ with BuildPart() as part:
     for point in points:
         with BuildPart(Location(point), mode=Mode.SUBTRACT):
             radius = 1.5
-            height = 2
+            height = 3.2
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align)
 
