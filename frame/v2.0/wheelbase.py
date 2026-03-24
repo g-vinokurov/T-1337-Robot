@@ -262,7 +262,8 @@ with BuildPart() as part:
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align)
 
-
+    roundable_edges = part.edges().filter_by(Axis.Z)
+    fillet(roundable_edges, radius=2)
 
 filename = f'{__file__.rstrip('.py')}'
 
