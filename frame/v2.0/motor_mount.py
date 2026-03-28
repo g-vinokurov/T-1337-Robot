@@ -11,29 +11,25 @@ with BuildPart() as part:
     # База
     length = unit_size * 8
     width  = unit_size * 4
-    height = unit_height / 3
+    height = unit_height
     Box(length, width, height)
     
     # Отверстия под крепежные винты
     points = [
         # Engines
-        (unit_size * 0.5,  unit_size * 1.5,  0),
-        (unit_size * 0.5,  unit_size * -1.5, 0),
-        (unit_size * 2.5,  unit_size * 1.5,  0),
-        (unit_size * 2.5,  unit_size * -1.5, 0),
-        (unit_size * 1.5,  unit_size * 1,    0),
-        (unit_size * 1.5,  unit_size * -1,   0),
-        (unit_size * -0.5, unit_size * 1.5,  0),
-        (unit_size * -0.5, unit_size * -1.5, 0),
-        (unit_size * -2.5, unit_size * 1.5,  0),
-        (unit_size * -2.5, unit_size * -1.5, 0),
-        (unit_size * -1.5, unit_size * 1,    0),
-        (unit_size * -1.5, unit_size * -1,   0),
+        (unit_size * 1,  unit_size * 1,  0),
+        (unit_size * 1,  unit_size * -1, 0),
+        (unit_size * -1,  unit_size * 1,  0),
+        (unit_size * -1,  unit_size * -1, 0),
+        (unit_size * 3,  unit_size * 1,  0),
+        (unit_size * 3,  unit_size * -1, 0),
+        (unit_size * -3,  unit_size * 1,  0),
+        (unit_size * -3,  unit_size * -1, 0),
     ]
     for point in points:
         with BuildPart(Location(point), mode=Mode.SUBTRACT):
             radius = 1.5
-            height = unit_height / 3
+            height = unit_height
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align)
 
