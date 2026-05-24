@@ -9,37 +9,51 @@ hole_outer_diameter = 6.2 # lego hole outer diameter
 
 with BuildPart() as part:
     # База
-    length = unit_size * 18
-    width  = unit_size * 2
-    height = unit_height
+    length = unit_size * 4
+    width  = unit_size * 4
+    height = 5
     Box(length, width, height)
     
-    # Отверстия под крепежные винты
+    # Отверстия под крепежные винты 2 mm
     points = [
-        (unit_size * -2.5, unit_size / 2,  0),
-        (unit_size * -2.5, -unit_size / 2, 0),
-        (unit_size * 2.5,  unit_size / 2,  0),
-        (unit_size * 2.5,  -unit_size / 2, 0),
+        (5, 5,  0),
+        (5, -5, 0),
+        (-5, 5,  0),
+        (-5, -5, 0),
+    ]
+    for point in points:
+        with BuildPart(Location(point), mode=Mode.SUBTRACT):
+            radius = 1
+            height = 5
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Cylinder(radius, height, align=align)
+    
+    # Отверстия под крепежные винты 3 mm
+    points = [
+        (0, 10,  0),
+        (0, -10, 0),
+        (10, 0,  0),
+        (-10, 0, 0),
     ]
     for point in points:
         with BuildPart(Location(point), mode=Mode.SUBTRACT):
             radius = 1.5
-            height = unit_height
+            height = 5
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align)
 
     # Утоплялки под крепежные винты
-    z_pos = unit_height / 2 - 1.5
+    z_pos = 2
     points = [
-        (unit_size * -2.5, unit_size / 2, z_pos),
-        (unit_size * -2.5, -unit_size / 2, z_pos),
-        (unit_size * 2.5,  unit_size / 2,  z_pos),
-        (unit_size * 2.5,  -unit_size / 2, z_pos),
+        (5, 5, z_pos),
+        (5, -5, z_pos),
+        (-5, 5,  z_pos),
+        (-5, -5, z_pos),
     ]
     for point in points:
         with BuildPart(Location(point), mode=Mode.SUBTRACT):
-            radius = 3
-            height = 3
+            radius = 2
+            height = 1
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align)
 
