@@ -28,67 +28,108 @@ with BuildPart() as part:
     # Стенки
     x_pos = 0
     y_pos = unit_size * 4 + 1.0
-    z_pos = unit_height * 1.5
+    z_pos = unit_height * 1
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = unit_size * 12
         width  = unit_size - 2.0
-        height = unit_height * 2
+        height = unit_height
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = unit_size * 4.5
     y_pos = unit_size * -4 - 1.0
-    z_pos = unit_height * 1.5
+    z_pos = unit_height * 1
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = unit_size * 3
         width  = unit_size - 2.0
-        height = unit_height * 2
+        height = unit_height
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = unit_size * -5.5 - 1.0
     y_pos = 0
-    z_pos = unit_height * 1.5
+    z_pos = unit_height * 1
     with BuildPart(Location((x_pos, y_pos, z_pos))):
         length = unit_size - 2.0
         width  = unit_size * 9
-        height = unit_height * 2
+        height = unit_height
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = unit_size * -5.5
     y_pos = 0
-    z_pos = unit_height * 1.5
+    z_pos = unit_height * 1
     with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
         length = unit_size
         width  = unit_size * 2
-        height = unit_height * 2
+        height = unit_height
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
     
     x_pos = 0
     y_pos = unit_size * 4
-    z_pos = unit_height * 1.5
+    z_pos = unit_height * 1
     with BuildPart(Location((x_pos, y_pos, z_pos)), mode=Mode.SUBTRACT):
         length = unit_size * 6
         width  = unit_size
-        height = unit_height * 2
+        height = unit_height
         align  = (Align.CENTER, Align.CENTER, Align.CENTER)
         Box(length, width, height)
 
-    # Штырики
+    # Отверстия под монтажные винты для платы
     points = [
-        (unit_size * -5 + 3.5,      24.5, unit_height),
-        (unit_size * -5 + 3.5,     -24.5, unit_height),
-        (unit_size * -5 + 3.5 + 58, 24.5, unit_height),
-        (unit_size * -5 + 3.5 + 58,-24.5, unit_height),
+        (unit_size * -5 + 3.5,      24.5, 0),
+        (unit_size * -5 + 3.5,     -24.5, 0),
+        (unit_size * -5 + 3.5 + 58, 24.5, 0),
+        (unit_size * -5 + 3.5 + 58,-24.5, 0),
     ]
     for point in points:
-        with BuildPart(Location(point)):
-            radius = 1.2
+        with BuildPart(Location(point), mode=Mode.SUBTRACT):
+            radius = 1
             height = unit_height
             align  = (Align.CENTER, Align.CENTER, Align.CENTER)
             Cylinder(radius, height, align=align)
+    
+    # Утоплялки под монтажные винты для платы
+    points = [
+        (unit_size * -5 + 3.5,      24.5, -unit_height / 2 + 1),
+        (unit_size * -5 + 3.5,     -24.5, -unit_height / 2 + 1),
+        (unit_size * -5 + 3.5 + 58, 24.5, -unit_height / 2 + 1),
+        (unit_size * -5 + 3.5 + 58,-24.5, -unit_height / 2 + 1),
+    ]
+    for point in points:
+        with BuildPart(Location(point), mode=Mode.SUBTRACT):
+            radius = 2
+            height = 2
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Cylinder(radius, height, align=align)
+    
+    # Отверстия под монтажные винты (3 mm)
+    points = [
+        (unit_size * -5.5, 0, 0),
+        (0, unit_size * -3, 0),
+        (0, unit_size * 3, 0),
+    ]
+    for point in points:
+        with BuildPart(Location(point), mode=Mode.SUBTRACT):
+            radius = 1.5
+            height = unit_height
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Cylinder(radius, height, align=align)
+    
+    # Утоплялки под монтажные винты (3 mm)
+    points = [
+        (unit_size * -5.5, 0, unit_height / 2 - 1.5),
+        (0, unit_size * -3, unit_height / 2 - 1.5),
+        (0, unit_size * 3, unit_height / 2 - 1.5),
+    ]
+    for point in points:
+        with BuildPart(Location(point), mode=Mode.SUBTRACT):
+            radius = 3
+            height = 3
+            align  = (Align.CENTER, Align.CENTER, Align.CENTER)
+            Cylinder(radius, height, align=align)
+
 
     roundable_edges = part.edges().filter_by(Axis.Z)
     fillet(roundable_edges, radius=2)
