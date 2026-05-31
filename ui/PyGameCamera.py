@@ -5,10 +5,10 @@ import requests
 import threading
 from collections import deque
 
-CTRL_HOST = '192.168.4.1'
+CTRL_HOST = '10.108.133.132'
 CTRL_PORT = 80
 
-VIDEO_HOST = '192.168.4.100'
+VIDEO_HOST = '10.108.133.184'
 VIDEO_PORT = 8000
 
 class FastPygameClient:

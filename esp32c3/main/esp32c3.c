@@ -17,8 +17,8 @@
 #define UART_RX_PIN        GPIO_NUM_5     // RX
 #define UART_BAUD_RATE     115200
 
-#define WIFI_SSID          "T1337_WEB"
-#define WIFI_PASS          "t1337_tank"
+#define WIFI_SSID          "Galaxy A06 0969"
+#define WIFI_PASS          "12345gviking"
 #define MAX_STA_CONN       4
 
 typedef enum {
@@ -172,42 +172,27 @@ static httpd_handle_t start_api_server(void) {
     return server;
 }
 
-static void wifi_init_softap(void) {
+static void wifi_init_sta(void) {
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
-    esp_netif_create_default_wifi_ap();
-
+    esp_netif_create_default_wifi_sta();
+    
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
-
+    
     wifi_config_t wifi_config = {
-        .ap = {
+        .sta = {
             .ssid = WIFI_SSID,
             .password = WIFI_PASS,
-            .ssid_len = strlen(WIFI_SSID),
-            .channel = 6,
-            .authmode = WIFI_AUTH_WPA_WPA2_PSK,
-            .max_connection = MAX_STA_CONN,
-            .beacon_interval = 100,
-            .pmf_cfg = {
-                .required = false,
-            },
         },
     };
-
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &wifi_config));
+    
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
-
-    esp_netif_ip_info_t ip_info;
-    esp_netif_t* netif = esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
-    if (netif) {
-        esp_netif_get_ip_info(netif, &ip_info);
-        ESP_LOGI(TAG, "WiFi AP started. SSID:%s, IP:" IPSTR, wifi_config.ap.ssid, IP2STR(&ip_info.ip));
-    } else {
-        ESP_LOGI(TAG, "WiFi AP started. SSID:%s", wifi_config.ap.ssid);
-    }
+    ESP_ERROR_CHECK(esp_wifi_connect());
+    
+    ESP_LOGI(TAG, "Connecting to phone hotspot: %s", WIFI_SSID);
 }
 
 void app_main(void) {
@@ -226,7 +211,7 @@ void app_main(void) {
     init_hardware_uart();
     
     // Инициализация WiFi и веб-сервера
-    wifi_init_softap();
+    wifi_init_sta();
     start_api_server();
     
     ESP_LOGI(TAG, "=== SYSTEM READY ===");
